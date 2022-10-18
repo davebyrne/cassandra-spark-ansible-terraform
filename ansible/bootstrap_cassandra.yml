@@ -1,0 +1,32 @@
+---
+  - name: Bootstrap cluster using serial seed nodes
+    hosts: cassandra_seed
+    become: yes
+    serial: 1
+    tasks: 
+      - name: Start cassandra
+        service: 
+          name: cassandra
+          state: restarted
+      - name: Wait for port cqlsh port to be available
+        wait_for:
+          port: 9042
+          delay: 10
+        
+  
+  - name: Bootstrap rest of cluster
+    hosts: cassandra:!cassandra_seed
+    become: yes
+    serial: 1
+    tasks: 
+      - name: Start cassandra
+        service: 
+          name: cassandra
+          state: restarted
+          
+      - name: Wait for port cqlsh port to be available
+        wait_for:
+          port: 9042
+          delay: 10
+
+  

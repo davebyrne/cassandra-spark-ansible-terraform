@@ -1,0 +1,7 @@
+---
+cassandra_cluster_name: "sample-cluster"
+cassandra_seed_group: "cassandra_seed"
+cassandra_num_tokens: 16
+cassandra_token_keyspace: "my_keyspace"
+jvm_stack_size: 384
+jvm_heap_size: 8

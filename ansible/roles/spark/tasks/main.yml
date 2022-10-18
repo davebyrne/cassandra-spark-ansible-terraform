@@ -1,0 +1,52 @@
+---
+  - name: Install java
+    yum:
+      name: java-1.8.0-openjdk
+
+  - name: Download spark
+    get_url:
+       url="https://downloads.apache.org/spark/spark-3.2.2/spark-3.2.2-bin-hadoop3.2.tgz"
+       dest="/home/centos/spark-3.2.2-bin-hadoop3.2.tgz"
+
+  - name: Extract spark into /opt/
+    unarchive:
+      src: /home/centos/spark-3.2.2-bin-hadoop3.2.tgz
+      dest: /opt
+      remote_src: yes
+
+  - name: Link to /opt/apache-spark
+    file:
+      src: /opt/spark-3.2.2-bin-hadoop3.2
+      dest: /opt/apache-spark
+      state: link
+
+  - name: Create spark tmp dir
+    file:
+      path: /data/apache-spark/tmp
+      state: directory
+
+  - name: set spark env
+    template:
+        src: files/spark-env.sh.j2
+        dest: /opt/apache-spark/conf/spark-env.sh
+        mode: '0755'
+
+  - name: hadoop-aws jars
+    get_url: 
+      url="https://search.maven.org/remotecontent?filepath=org/apache/hadoop/hadoop-aws/3.3.1/hadoop-aws-3.3.1.jar"
+      dest="/opt/apache-spark/jars"
+
+  - name: aws-sdk jars
+    get_url: 
+      url="https://search.maven.org/remotecontent?filepath=com/amazonaws/aws-java-sdk-bundle/1.11.962/aws-java-sdk-bundle-1.11.962.jar"
+      dest="/opt/apache-spark/jars"
+
+  - name: guava (hadoop-aws dependency)
+    get_url: 
+      url="https://search.maven.org/remotecontent?filepath=com/google/guava/guava/30.1-jre/guava-30.1-jre.jar"
+      dest="/opt/apache-spark/jars"
+
+  - name: delete old version of guava (conflicts with hadoop-aws)
+    file: 
+      path: /opt/apache-spark/jars/guava-14.0.1.jar
+      state: absent

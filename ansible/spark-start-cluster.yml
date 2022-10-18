@@ -1,0 +1,15 @@
+---
+- hosts: cassandra:cluster_mgmt
+  gather_facts: no
+    
+- hosts: cluster_mgmt
+  become: true
+  tasks: 
+  - name: Start master
+    shell: "/opt/apache-spark/sbin/start-master.sh"
+
+- hosts: cassandra
+  become: true
+  tasks: 
+  - name: Start slave
+    shell: "/opt/apache-spark/sbin/start-slave.sh spark://{{hostvars[groups['cluster_mgmt'][0]]['inventory_hostname']}}:7077"

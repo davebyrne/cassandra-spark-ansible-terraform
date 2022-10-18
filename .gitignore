@@ -1,0 +1,7 @@
+terraform.tfvars
+.envrc
+terraform.tfstate*
+ansible/inventory/*
+!ansible/inventory/.keep
+ansible.cfg
+.terraform

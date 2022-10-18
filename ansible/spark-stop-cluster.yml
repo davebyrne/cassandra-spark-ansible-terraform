@@ -1,0 +1,12 @@
+---
+- hosts: cassandra
+  become: true
+  tasks: 
+  - name: Stop slave
+    shell: "/opt/apache-spark/sbin/stop-slave.sh"
+
+- hosts: cluster_mgmt
+  become: true
+  tasks: 
+  - name: Stop master
+    shell: "/opt/apache-spark/sbin/stop-master.sh"

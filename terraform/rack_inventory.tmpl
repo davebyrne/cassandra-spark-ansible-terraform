@@ -1,0 +1,8 @@
+[cassandra_seed]
+${cassandra_rack[0].private_ip}
+
+
+[cassandra]
+%{ for host in cassandra_rack ~}
+${host.private_ip}
+%{ endfor ~}

@@ -1,0 +1,14 @@
+---
+  - name: Install cassandra
+    hosts: cassandra
+    become: true
+    roles: 
+      - cassandra
+
+  - name: Install spark
+    hosts: cassandra:cluster_mgmt
+    become: true
+    roles: 
+      - spark
+
+  

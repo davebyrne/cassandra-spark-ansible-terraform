@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+    - name: install std packages
+      yum: 
+        name: 
+        -  sysstat
+        -  unzip
+        -  tmux
+    - name: install epel-release
+      yum:
+        name: 'epel-release'
+    - name: epel packages
+      yum: 
+        name: 
+        - iftop
+        - parallel
+    - name: Disable SELinux
+      selinux:
+        state: disabled      
+    - name: Reboot to use updated packages
+      reboot:
+        reboot_timeout: 300
+    - name: Wait for systems to become reachable
+      wait_for_connection:
+
+      
+    
